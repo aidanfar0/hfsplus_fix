@@ -51,24 +51,27 @@ int main(int argc, char *argv[])
 	    printf("Volume already unmounted cleanly\n");
 	}
 	
-	promptVer();
+	promptVer(argv[1]);
 	
-	char custom_sig[256];
-	if(scanf("%s", custom_sig) != 1) {
+	char custom_sig[5];
+	
+	if(fgets(custom_sig, 5, stdin) == NULL) {
 	    printf("error: No signature read\n");
 	    return 1;
 	}
-	if(strlen(custom_sig) > 4) {
-	    printf("error: Signature too long\n");
-	    return 1;
+	
+	int sig_len = strlen(custom_sig);
+	if(sig_len == 1 && custom_sig[0] == '\n') {
+	    printf("Using Default 'H+Lx'\n");
+	    strncpy(custom_sig, "H+Lx", 4);
+	    sig_len = 4;
 	}
-	custom_sig[4] = '\0';
-	if(strlen(custom_sig) != 4) {
-	    printf("error: Signature too short\n");
+	if(sig_len != 4) {
+	    printf("error: Signature too short. Must be 4 characters.\n");
 	    return 1;
 	}
 	
-	printf("Proceeding\n");
+	printf("Proceeding");
 	
 	attributes &= 0xffffdfff;
 	printf("Journal disabled.\n");
@@ -84,7 +87,7 @@ int main(int argc, char *argv[])
 	buffer[1034] = custom_sig[2];//'.';
 	buffer[1035] = custom_sig[3];//'0';
 	
-	printf("Set signature.\n");
+	printf("Set signature to %s\n", custom_sig);
 	
 	//journalInfoBlock
 	buffer[1036] = 0;

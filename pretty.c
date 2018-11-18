@@ -2,10 +2,14 @@
 
 int simple = 1;
 
-void promptVer() {
-    if(simple) 
+void promptVer(char *arg) {
+    if(simple) {
+        printf("WARNING: This has potential to cause data loss, you should AT LEAST take a backup of the first 2048 bytes of the partition. \n");
+            
         printf("LastMountedVersion (4 Chars, Recommended 'H+Lx'): ");
-    else {
+    } else {
+        printf("\e[41;37mWARNING:\e[0m This has the potential to cause \e[1mdata loss\e[0m, you should \e[1mAT LEAST\e[0m take a backup of the first 2048 bytes of the partition.\n");
+        printf("To do that, do \e[3mdd if=%s of=BACKUP_NAME count=2 bs=1024\e[0m\n", arg);
 	    printf("Enter the 4-Character Last-Moutned version ('\e[1mH+Lx\e[0m' or '\e[1m10.0\e[0m', H+Lx will work with linux read/write mount) ");
 	    printf("Ctrl+C To cancel:\n");
 	}
