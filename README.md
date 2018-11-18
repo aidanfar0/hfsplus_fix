@@ -19,3 +19,12 @@ This program disables the journal, which may result in data loss!
  - Zero's the Journal's block number
 
 This should make it mountable as read-write on linux using hfsutils/hfsprog
+
+### Credits:
+  https://dmunsie.wordpress.com/code/hacks/
+    for their (mac, not linux) disable journal code.
+
+  and "blink" https://ubuntuforums.org/showthread.php?t=1420673#post_10303113
+  shows how to get that to work on linux
+
+  And Mac Documentation on HFS+: https://developer.apple.com/library/archive/technotes/tn/tn1150.html#//apple_ref/doc/uid/DTS10002989
