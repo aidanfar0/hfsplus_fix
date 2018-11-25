@@ -15,9 +15,14 @@
 
 int main(int argc, char *argv[])
 {
+	if(argc < 2) {
+		fprintf(stderr, "Usage: %s /dev/block_device\n", argv[0]);
+		return 1;
+	}
+	
 	int fd = open(argv[1], O_RDWR);
 	if(fd < 0) {
-		perror("open");
+		fprintf(stderr, "%s: No such file '%s'\n", argv[0], argv[1]);
 		return -1;
 	}
 	
@@ -42,13 +47,13 @@ int main(int argc, char *argv[])
 	if(!(attributes &  0x00002000)) {
 		printf("Journal is already disabled\n");//kHFSVolumeJournaledBit not currently set in the volume attributes field.\n");
 	} else {
-	    printf("Journal is enabled, will disable\n");
+		printf("Journal is enabled, will disable\n");
 	}
 	
 	if(!(attributes & 0x00000100)) {
 		printf("Volume not set to unmounted, will 'unmount'\n");//kHFSVolumeUnmountedBit not currently set in the volume attributes field.\n");
 	} else {
-	    printf("Volume already unmounted cleanly\n");
+		printf("Volume already unmounted cleanly\n");
 	}
 	
 	promptVer(argv[1]);
@@ -56,19 +61,19 @@ int main(int argc, char *argv[])
 	char custom_sig[5];
 	
 	if(fgets(custom_sig, 5, stdin) == NULL) {
-	    printf("error: No signature read\n");
-	    return 1;
+		printf("error: No signature read\n");
+		return 1;
 	}
 	
 	int sig_len = strlen(custom_sig);
 	if(sig_len == 1 && custom_sig[0] == '\n') {
-	    printf("Using Default 'H+Lx'\n");
-	    strncpy(custom_sig, "H+Lx", 4);
-	    sig_len = 4;
+		printf("Using Default 'H+Lx'\n");
+		strncpy(custom_sig, "H+Lx", 4);
+		sig_len = 4;
 	}
 	if(sig_len != 4) {
-	    printf("error: Signature too short. Must be 4 characters.\n");
-	    return 1;
+		printf("error: Signature too short. Must be 4 characters.\n");
+		return 1;
 	}
 	
 	printf("Proceeding");
